@@ -1,45 +1,52 @@
 import { useState, useMemo } from 'react'
 import Head from 'next/head'
-import api from 'products/api'
-import { Flex, Button, Grid, Link, Stack, Text, Image } from '@chakra-ui/react'
+import { useToast, Flex, Button, Grid, Link, Stack, Text, Image } from '@chakra-ui/react'
 import DetailsModal from 'components/DetailsModal'
 
 export default function Home ({ products }) {
   const [cart, setCart] = useState([])
 
-  console.log(cart)
-  // console.log(products.map(product => ({ ...product, qty: 0 })))
+  const toast = useToast()
 
-  // formatear bien moneda CLP (componetizar)
+  // contador de productos
+  const itemsInCart = (items) => {
+    return items.map(item => item.qty).reduce((prev, next) => prev + next, 0)
+  }
+
+  // moneda formateada nazimente
   const parseCurrency = (value) => {
-    return value.toLocaleString('es-CL', {
-      style: 'currency',
-      currency: 'CHL'
-    })
+    const numberFormat = new Intl.NumberFormat('en-US')
+
+    return numberFormat.format(value).replace(',', '.')
   }
 
   // Componetizar Checkout Format <-----
   const textMessage = useMemo(() => {
     return cart
-      .reduce((message, product) => message.concat(`* ${product.title} - ${parseCurrency(product.price)}\n`), '')
-      .concat(`\nTotal: $${parseCurrency(cart.reduce((total, product) => total + product.price, 0))}`)
+      .reduce((message, product) => message.concat(`* ${product.title} X ${product.qty} - $${parseCurrency(product.price * product.qty)}\n`), '')
+      .concat(`\nTotal: $${parseCurrency(cart.reduce((total, product) => total + product.price * product.qty, 0))}`)
   }, [cart])
 
   const addToCart = (product) => {
-    setCart(cart => cart.concat(product))
+    toast({
+      title: 'Producto agregado.',
+      description: product ? `Has agregado ${product.title} a tu carro` : '',
+      status: 'success',
+      duration: 1500,
+      isClosable: true
+    })
 
     const exist = cart.find(x => x.id === product.id)
 
     if (exist) {
-      console.log('Tengo que agruparlo')
       setCart(
         cart.map(item => item.id === product.id
-          ? { ...exist, qty: item.qty + 1 } // como puedo indentificar un qty?
+          ? { ...exist, qty: item.qty + 1 }
           : item
         )
       )
     } else {
-      console.log('Primera vez añadido')
+      setCart(cart => cart.concat(product))
     }
   }
 
@@ -57,7 +64,7 @@ export default function Home ({ products }) {
               <Image objectFit='cover' src={product.image} alt={product.title} />
               <Stack spacing={1}>
                 <Text>{product.title}</Text>
-                <Text fontSize='sm' fontWeight='500' color='green.500'>{parseCurrency(product.price)}</Text>
+                <Text fontSize='sm' fontWeight='500' color='green.500'>${parseCurrency(product.price)}</Text>
               </Stack>
               <Button
                 size='sm'
@@ -70,6 +77,7 @@ export default function Home ({ products }) {
             </Stack>
           ))}
         </Grid>
+
         {cart.length &&
           <Flex bottom={0} padding={4} justifyContent='center' position='sticky'>
             <Button
@@ -83,17 +91,23 @@ export default function Home ({ products }) {
               }
               size='lg'
             >
-              Ver carrito ({cart.length} productos)
+              Ver carrito ({itemsInCart(cart)} productos)
             </Button>
           </Flex>}
       </Stack>
 
-      <DetailsModal products={cart} setCart={setCart} />
+      <DetailsModal
+        products={cart}
+        setCart={setCart}
+        itemsInCart={itemsInCart}
+        textMessage={textMessage}
+      />
     </div>
   )
 }
 
 export async function getStaticProps () {
+  const api = require('../products/api')
   const products = await api()
 
   return {
