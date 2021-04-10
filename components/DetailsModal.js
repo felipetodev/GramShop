@@ -82,7 +82,7 @@ export default function DetailsModal ({ products = [], setCart, itemsInCart, tex
                   <Box key={product.id} display='flex' justifyContent='space-between'>
                     <Stack>
                       <Text>{product.title} x {product.qty}</Text>
-                      <Text>${parseCurrency(product.price * product.qty)}</Text>
+                      <Text color='orange'>${parseCurrency(product.price * product.qty)}</Text>
                     </Stack>
                     <Button
                       onClick={() => deleteItem(product)}
@@ -95,7 +95,7 @@ export default function DetailsModal ({ products = [], setCart, itemsInCart, tex
               </Stack>
             </DrawerBody>
 
-            <Text>Total ${parseCurrency(totalCheckout(products))}</Text>
+            <Text color='orange'>Total ${parseCurrency(totalCheckout(products))}</Text>
             <DrawerFooter>
               <Button
                 variant='outline'

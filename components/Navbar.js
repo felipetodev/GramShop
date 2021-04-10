@@ -11,7 +11,7 @@ export default function Navbar ({ cart = [], setCart, itemsInCart, textMessage }
           width='100%'
           borderRadius='0 0 10px 10px'
           objectFit='cover'
-          src='https://res.cloudinary.com/goncy/image/upload/v1589912646/pency/y0vy0hpyz5m1echx0het.jpg'
+          src='https://cdn11.bigcommerce.com/s-xyzsz7/product_images/uploaded_images/funko-background-image-1-.jpg'
         />
       </Box>
       <Flex
@@ -41,8 +41,8 @@ export default function Navbar ({ cart = [], setCart, itemsInCart, textMessage }
         </Stack>
         <Flex marginLeft={4} justifyContent='flex-end' flexDirection='column' marginRight='auto'>
           <Text as='h1' fontSize={35} fontWeight='bold'>Funko-Pop Store</Text>
-          <Text as='h2'>Pizzas Argentinas estilo Barrio Italia</Text>
-          <Link>Av. Barrio Italia #3888</Link>
+          <Text as='h2'>La mayor variedad de Funko POP de Chile</Text>
+          <Link>Av. Nueva Providencia 2214</Link>
         </Flex>
 
         <DetailsModal

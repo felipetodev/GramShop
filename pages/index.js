@@ -61,7 +61,7 @@ export default function Home ({ products }) {
         <FormControl marginTop='10rem' overflow='hidden' borderRadius='0 0 10px 10px'>
           <FormLabel
             pointerEvents='none'
-            color='teal'
+            color='orange'
             display='flex'
             borderRadius='10px 10px 0 0'
             padding={2}
@@ -70,7 +70,7 @@ export default function Home ({ products }) {
             justifyContent='center'
             backgroundColor='orange.100'
           >
-            Enviamos de Lunes a Viernes de 19 - 24hs.
+            Enviamos de Lunes a Viernes de 10 - 16hs.
           </FormLabel>
 
           <Search
