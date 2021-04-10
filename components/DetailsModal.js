@@ -5,6 +5,7 @@ import {
   Stack,
   Image,
   Button,
+  useToast,
   useDisclosure,
   Drawer,
   DrawerBody,
@@ -15,14 +16,12 @@ import {
   DrawerCloseButton,
   Link
 } from '@chakra-ui/react'
+import { totalCheckout, parseCurrency } from 'helpers'
 
 export default function DetailsModal ({ products = [], setCart, itemsInCart, textMessage }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef()
-
-  const totalCheckout = (number) => {
-    return number.reduce((total, product) => total + product.price * product.qty, 0)
-  }
+  const toast = useToast()
 
   const deleteItem = (product) => {
     const exist = products.find(x => x.id === product.id)
@@ -41,17 +40,30 @@ export default function DetailsModal ({ products = [], setCart, itemsInCart, tex
     }
   }
 
+  const handleClick = () => {
+    if (products.length) {
+      onOpen()
+    } else {
+      toast({
+        title: 'No tienes productos',
+        description: 'Agrega productos a tu carrito.',
+        position: 'top-right',
+        isClosable: true
+      })
+    }
+  }
+
   return (
     <>
       <Button
         ref={btnRef}
-        colorScheme='teal'
-        onClick={onOpen}
+        colorScheme='orange'
+        onClick={handleClick}
         leftIcon={
           <Image src='https://icongr.am/fontawesome/shopping-cart.svg?size=32&color=ffffff' />
         }
       >
-        <Text>{itemsInCart(products)}</Text>
+        <Text>({itemsInCart(products)})</Text>
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -70,7 +82,7 @@ export default function DetailsModal ({ products = [], setCart, itemsInCart, tex
                   <Box key={product.id} display='flex' justifyContent='space-between'>
                     <Stack>
                       <Text>{product.title} x {product.qty}</Text>
-                      <Text>${product.price * product.qty}</Text>
+                      <Text>${parseCurrency(product.price * product.qty)}</Text>
                     </Stack>
                     <Button
                       onClick={() => deleteItem(product)}
@@ -83,7 +95,7 @@ export default function DetailsModal ({ products = [], setCart, itemsInCart, tex
               </Stack>
             </DrawerBody>
 
-            <Text>Total ${totalCheckout(products)}</Text>
+            <Text>Total ${parseCurrency(totalCheckout(products))}</Text>
             <DrawerFooter>
               <Button
                 variant='outline'
@@ -93,11 +105,15 @@ export default function DetailsModal ({ products = [], setCart, itemsInCart, tex
                 Vaciar carrito
               </Button>
               <Button
-                colorScheme='blue'
+                colorScheme='whatsapp'
                 as={Link}
                 isExternal
                 href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP}?text=${encodeURIComponent(textMessage)}`}
-              >Checkout
+                leftIcon={
+                  <Image src='https://icongr.am/fontawesome/whatsapp.svg?size=32&color=ffffff' />
+                }
+              >
+                Checkout
               </Button>
             </DrawerFooter>
           </DrawerContent>

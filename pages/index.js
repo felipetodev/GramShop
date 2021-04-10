@@ -1,24 +1,13 @@
 import { useState, useMemo } from 'react'
 import Head from 'next/head'
-import { useToast, Flex, Button, Grid, Link, Stack, Text, Image } from '@chakra-ui/react'
-import DetailsModal from 'components/DetailsModal'
+import { useToast, Button, Grid, Stack, Text, Image, Container, FormLabel, FormControl } from '@chakra-ui/react'
+import { itemsInCart, parseCurrency } from 'helpers'
+import Navbar from 'components/Navbar'
+import Search from 'components/Search'
 
 export default function Home ({ products }) {
   const [cart, setCart] = useState([])
-
   const toast = useToast()
-
-  // contador de productos
-  const itemsInCart = (items) => {
-    return items.map(item => item.qty).reduce((prev, next) => prev + next, 0)
-  }
-
-  // moneda formateada nazimente
-  const parseCurrency = (value) => {
-    const numberFormat = new Intl.NumberFormat('en-US')
-
-    return numberFormat.format(value).replace(',', '.')
-  }
 
   // Componetizar Checkout Format <-----
   const textMessage = useMemo(() => {
@@ -53,12 +42,49 @@ export default function Home ({ products }) {
   return (
     <div>
       <Head>
-        <title>Tiendita Gram</title>
+        <title>Funko-pop Store</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <Stack spacing={6}>
-        <Grid gridGap={6} templateColumns='repeat(auto-fill, minmax(250px, 1fr))'>
+      <Container
+        borderRadius='sm'
+        maxWidth='1250px'
+        padding={0}
+      >
+        <Navbar
+          cart={cart}
+          setCart={setCart}
+          itemsInCart={itemsInCart}
+          textMessage={textMessage}
+        />
+
+        <FormControl marginTop='10rem' overflow='hidden' borderRadius='0 0 10px 10px'>
+          <FormLabel
+            pointerEvents='none'
+            color='teal'
+            display='flex'
+            borderRadius='10px 10px 0 0'
+            padding={2}
+            margin={0}
+            fontWeight='bold'
+            justifyContent='center'
+            backgroundColor='orange.100'
+          >
+            Enviamos de Lunes a Viernes de 19 - 24hs.
+          </FormLabel>
+
+          <Search
+            products={products}
+          />
+
+        </FormControl>
+        <Grid
+          // backgroundColor='white'
+          margin='2rem 0'
+          padding={3}
+          gridGap={6}
+          templateColumns='repeat(auto-fill, minmax(250px, 1fr))'
+        >
           {products.map(product => (
             <Stack spacing={3} borderRadius='md' padding={4} key={product.id} backgroundColor='gray.100'>
               <Image objectFit='cover' src={product.image} alt={product.title} />
@@ -69,7 +95,7 @@ export default function Home ({ products }) {
               <Button
                 size='sm'
                 colorScheme='primary'
-                variant='outline'
+                // variant='outline'
                 onClick={() => addToCart({ ...product, qty: 1 })}
               >
                 Agregar
@@ -77,31 +103,7 @@ export default function Home ({ products }) {
             </Stack>
           ))}
         </Grid>
-
-        {cart.length &&
-          <Flex bottom={0} padding={4} justifyContent='center' position='sticky'>
-            <Button
-              width='fit-content'
-              isExternal
-              as={Link}
-              colorScheme='whatsapp'
-              href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP}?text=${encodeURIComponent(textMessage)}`}
-              leftIcon={
-                <Image src='https://icongr.am/fontawesome/whatsapp.svg?size=32&color=ffffff' />
-              }
-              size='lg'
-            >
-              Ver carrito ({itemsInCart(cart)} productos)
-            </Button>
-          </Flex>}
-      </Stack>
-
-      <DetailsModal
-        products={cart}
-        setCart={setCart}
-        itemsInCart={itemsInCart}
-        textMessage={textMessage}
-      />
+      </Container>
     </div>
   )
 }
@@ -111,7 +113,7 @@ export async function getStaticProps () {
   const products = await api()
 
   return {
-    revalidate: 10,
+    revalidate: 5,
     props: {
       products
     }
