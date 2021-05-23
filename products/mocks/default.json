@@ -1,0 +1,66 @@
+[
+  {
+      "id": "44806300-9af9-48f0-8714-1834bc2412d8",
+      "title": "Camiseta Nike Liverpool 2020/2021",
+      "category": "premier_league",
+      "description": "liverpool",
+      "price": 79900,
+      "image": "https://img.planetafobal.com/2020/08/liverpool-fc-camiseta-nike-2020-2021-bg.jpg"
+  },
+  {
+      "id": "93a2387d-20c5-4ef8-8707-bc2bece54ce5",
+      "title": "Maglia Lautaro ufficiale Inter",
+      "category": "serie_a",
+      "description": "inter",
+      "price": 39990,
+      "image": "https://www.venturinisouvenirs.it/wp-content/uploads/2017/09/maglia-ufficiale-lautaro-inter.jpg"
+  },
+  {
+      "id": "2504fcf4-ac56-4909-9f15-912107c16bd7",
+      "title": "Nike Tottenham Hotspur Away Shirt 2020 2021",
+      "category": "premier_league",
+      "description": "tottenham",
+      "price": 16990,
+      "image": "https://images.sportsdirect.com/images/products/37765016_l.jpg"
+  },
+  {
+      "id": "f27f2226-19e0-4558-9e8a-f76bb5b2fea1",
+      "title": "Funko Pop DragonBall S4- Super Saiyan Kale",
+      "category": "juguetes",
+      "description": "dragonball",
+      "price": 14990,
+      "image": "https://falabella.scene7.com/is/image/Falabella/14483186_1?wid=800&hei=800&qlt=70"
+  },
+  {
+      "id": "46082331-a521-4206-9530-62103b4c6084",
+      "title": "Funko Pop Star Wars Baby Yoda W/ Frog",
+      "category": "juguetes",
+      "description": "starwars",
+      "price": 19900,
+      "image": "https://falabella.scene7.com/is/image/Falabella/13791670_1?wid=800&hei=800&qlt=70"
+  },
+  {
+      "id": "26a1fe4f-61c6-4813-84ad-68889fee4e1a",
+      "title": "Funko Pop Star Wars Darth Vader Con Luz Y Sonido",
+      "category": "juguetes",
+      "description": "starwars",
+      "price": 29900,
+      "image": "https://falabella.scene7.com/is/image/Falabella/8454067_1?wid=800&hei=800&qlt=70"
+  },
+  {
+      "id": "c595833b-9efd-426d-bd13-68cbe63f9352",
+      "title": "Funko Pop Rides Game Of thrones Daenerys on Fiery Drogon",
+      "category": "juguetes",
+      "description": "game of thrones",
+      "price": 21990,
+      "image": "https://falabella.scene7.com/is/image/Falabella/8249191_1?wid=800&hei=800&qlt=70"
+  },
+  {
+      "id": "697637c4-2810-4e24-8e7e-e6d1240d493b",
+      "title": "Funko Pop Avatar Aang With Momo",
+      "category": "juguetes",
+      "description": "avatar",
+      "price": 24990,
+      "image": "https://falabella.scene7.com/is/image/Falabella/14955498_1?wid=800&hei=800&qlt=70"
+  }
+]

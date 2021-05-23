@@ -15,9 +15,16 @@ const api = async () => {
   return (
     dataParsed.data.map(products => ({
       ...products,
-      price: Number(products.price)
+      price: Number(products.price),
+      stock_quantity: Number(products.stock_quantity)
     }))
   )
 }
 
-module.exports = api
+// mock for ssr testing
+/*
+const mock = async (mock) => import(`./mocks/${mock}.json`)
+  .then(res => res.default)
+*/
+
+module.exports = { api }
