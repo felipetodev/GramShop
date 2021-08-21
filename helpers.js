@@ -60,3 +60,28 @@ export const handleQuantity = (product, action, cart) => {
       )
   }
 }
+
+/* TOAST NOTIFICATION DICTIONARY */
+export const TOAST_SELECTOR = {
+  addToCart: (product) => ({
+    title: 'Producto agregado.',
+    description: product ? `Has agregado ${product.title} a tu carro` : '',
+    status: 'success',
+    duration: 1500,
+    isClosable: true
+  }),
+  addProductWithoutSize: () => ({
+    title: 'Selecciona una talla',
+    description: 'Elige una talla antes de añadir al carrito',
+    status: 'error',
+    duration: 1500,
+    isClosable: true
+  }),
+  openDrawerWithoutProducts: () => ({
+    title: 'No tienes productos',
+    description: 'Agrega productos a tu carrito.',
+    position: 'top-right',
+    duration: 1500,
+    isClosable: true
+  })
+}

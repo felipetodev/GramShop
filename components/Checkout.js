@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import {
   Text,
   Stack,
+  Flex,
   Image,
   Button,
   useToast,
@@ -19,55 +20,74 @@ import {
   Divider,
   HStack
 } from '@chakra-ui/react'
-import { totalCheckout, parseCurrency, getCartResume, handleQuantity } from 'helpers'
+import { totalCheckout, itemsInCart, parseCurrency, getCartResume, handleQuantity, TOAST_SELECTOR } from 'helpers'
 
-export default function DetailsModal ({ products = [], setCart, itemsInCart }) {
+const EMPTY_CART = []
+
+export default function DetailsModal ({ cart = [], setCart }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef()
   const toast = useToast()
 
   const textMessage = useMemo(() => {
-    return getCartResume(products)
-  }, [products])
+    return getCartResume(cart)
+  }, [cart])
 
   useEffect(() => {
-    if (products.length === 0) return onClose()
-  }, [products])
+    if (cart.length === 0) return onClose()
+  }, [cart])
 
-  const handleQuantitySelector = (product, action, products) => {
-    setCart(handleQuantity(product, action, products))
+  const handleQuantitySelector = (product, action, cart) => {
+    setCart(handleQuantity(product, action, cart))
   }
 
-  const handleClick = () => {
-    if (products.length) {
-      onOpen()
-    } else {
-      toast({
-        title: 'No tienes productos',
-        description: 'Agrega productos a tu carrito.',
-        position: 'top-right',
-        isClosable: true
-      })
-    }
+  const handleOpenCart = () => {
+    cart.length
+      ? onOpen()
+      : toast(TOAST_SELECTOR.openDrawerWithoutProducts())
   }
 
   const handleEmptyCart = () => {
-    setCart([])
+    setCart(EMPTY_CART)
     onClose()
   }
 
   return (
     <>
-      <Button
-        ref={btnRef}
-        colorScheme='primary'
-        onClick={handleClick}
-        leftIcon={
-          <Image src='https://icongr.am/fontawesome/shopping-cart.svg?size=32&color=ffffff' />
-        }
-      >
-        <Text>({itemsInCart(products)})</Text>
-      </Button>
+      {Boolean(cart.length) && (
+        <Flex alignItems='center' bottom={4} justifyContent='center' position='sticky'>
+          <Button
+            boxShadow='xl'
+            colorScheme='primary'
+            data-testid='show-cart'
+            size='lg'
+            width={{ base: '100%', sm: 'fit-content' }}
+            onClick={handleOpenCart}
+          >
+            <Stack alignItems='center' direction='row' spacing={6}>
+              <Stack alignItems='center' direction='row' spacing={3}>
+                <Text fontSize='md' lineHeight={6}>
+                  Ver pedido
+                </Text>
+                <Text
+                  backgroundColor='rgba(0,0,0,0.25)'
+                  borderRadius='sm'
+                  color='gray.100'
+                  fontSize='xs'
+                  fontWeight='500'
+                  paddingX={2}
+                  paddingY={1}
+                >
+                  {itemsInCart(cart)} items
+                </Text>
+              </Stack>
+              <Text fontSize='md' lineHeight={6}>
+                ${parseCurrency(totalCheckout(cart))}
+              </Text>
+            </Stack>
+          </Button>
+        </Flex>)}
+
       <Drawer
         size='sm'
         isOpen={isOpen}
@@ -82,7 +102,7 @@ export default function DetailsModal ({ products = [], setCart, itemsInCart }) {
 
             <DrawerBody>
               <List spacing={5}>
-                {products.map(product => (
+                {cart.map(product => (
                   <ListItem key={product.id}>
                     <Stack>
                       {product.stock_quantity === 0 &&
@@ -98,9 +118,9 @@ export default function DetailsModal ({ products = [], setCart, itemsInCart }) {
                         <Text color='primary.400'>${parseCurrency(product.price * product.qty)}</Text>
                       </HStack>
                       <HStack spacing={3} alignSelf='flex-start'>
-                        <Button colorScheme='whatsapp' size='xs' onClick={() => handleQuantitySelector(product, 'decrement', products)}>-</Button>
+                        <Button colorScheme='whatsapp' size='xs' onClick={() => handleQuantitySelector(product, 'decrement', cart)}>-</Button>
                         <Text>{product.qty}</Text>
-                        <Button colorScheme='whatsapp' size='xs' onClick={() => handleQuantitySelector(product, 'increment', products)}>+</Button>
+                        <Button colorScheme='whatsapp' size='xs' onClick={() => handleQuantitySelector(product, 'increment', cart)}>+</Button>
                       </HStack>
                       <Divider pt={1} />
                     </Stack>
@@ -114,7 +134,7 @@ export default function DetailsModal ({ products = [], setCart, itemsInCart }) {
             <DrawerFooter display='table-column'>
               <Stack fontWeight='bold' marginBottom={4} direction='row' justifyContent='space-between'>
                 <Text color='primary.700'>Total</Text>
-                <Text>${parseCurrency(totalCheckout(products))}</Text>
+                <Text>${parseCurrency(totalCheckout(cart))}</Text>
               </Stack>
               <Stack direction='row'>
                 <Button
@@ -127,7 +147,7 @@ export default function DetailsModal ({ products = [], setCart, itemsInCart }) {
                   Vaciar carrito
                 </Button>
                 <Button
-                  width='xl'
+                  w='xl'
                   size='lg'
                   colorScheme='whatsapp'
                   as={Link}

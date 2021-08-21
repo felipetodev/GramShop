@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import Head from 'next/head'
-import { Grid, Container, FormLabel, FormControl } from '@chakra-ui/react'
-import Navbar from 'components/Navbar'
+import { Container, FormLabel, FormControl } from '@chakra-ui/react'
 import Search from 'components/Search'
 import ProductsCards from 'components/ProductsCards'
-import { itemsInCart } from 'helpers'
+import Header from 'components/Header'
+import Checkout from 'components/Checkout'
 import { useSessionStorage } from 'hooks/useSessionStorage'
 import { APP } from 'app/constants'
 
@@ -21,16 +21,11 @@ export default function Home ({ products }) {
 
       <Container
         borderRadius='sm'
-        maxWidth='1250px'
-        padding={0}
+        maxWidth='container.xl'
+        padding={{ base: 0, sm: 3 }}
       >
-        <Navbar
-          cart={cart}
-          setCart={setCart}
-          itemsInCart={itemsInCart}
-        />
-
-        <FormControl marginTop='10rem' overflow='hidden' borderRadius='0 0 10px 10px'>
+        <Header />
+        <FormControl borderRadius='0 0 10px 10px'>
           <FormLabel
             pointerEvents='none'
             color='primary.700'
@@ -41,6 +36,7 @@ export default function Home ({ products }) {
             fontWeight='bold'
             justifyContent='center'
             backgroundColor='primary.200'
+            fontSize={{ base: 14, sm: 16 }}
           >
             {APP.schedule}
           </FormLabel>
@@ -52,14 +48,10 @@ export default function Home ({ products }) {
           />
 
         </FormControl>
-        <Grid
-          margin='2rem 0'
-          padding={3}
-          gridGap={6}
-          templateColumns='repeat(auto-fill, minmax(250px, 1fr))'
-        >
-          <ProductsCards products={products} cart={cart} setCart={setCart} productSearch={productSearch} />
-        </Grid>
+
+        <ProductsCards products={products} cart={cart} setCart={setCart} productSearch={productSearch} />
+
+        <Checkout cart={cart} setCart={setCart} />
       </Container>
     </div>
   )
@@ -70,7 +62,7 @@ export async function getStaticProps () {
   const products = await api()
 
   return {
-    revalidate: 5,
+    revalidate: 10,
     props: {
       products
     }
