@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Head from 'next/head'
 import { Container, FormLabel, FormControl } from '@chakra-ui/react'
 import Search from 'components/Search'
-import ProductsCards from 'components/ProductsCards'
+import ProductsList from 'components/ProductsList'
 import Header from 'components/Header'
 import Checkout from 'components/Checkout'
 import { useSessionStorage } from 'hooks/useSessionStorage'
@@ -49,7 +49,12 @@ export default function Home ({ products }) {
 
         </FormControl>
 
-        <ProductsCards products={products} cart={cart} setCart={setCart} productSearch={productSearch} />
+        <ProductsList
+          products={products}
+          cart={cart}
+          setCart={setCart}
+          productSearch={productSearch}
+        />
 
         <Checkout cart={cart} setCart={setCart} />
       </Container>

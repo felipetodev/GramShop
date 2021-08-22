@@ -111,7 +111,7 @@ export default function DetailsModal ({ cart = [], setCart }) {
                         <Text fontWeight={500}>
                           {product.title}
                           {' '}
-                          {product.size.map((item, idx) => (
+                          {product?.size?.map((item, idx) => (
                             <span key={`${idx}-talla-${item}`}>({item}) </span>
                           ))}
                         </Text>

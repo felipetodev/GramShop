@@ -1,13 +1,17 @@
 import { Select } from '@chakra-ui/react'
+import { useState } from 'react'
 
-export default function SizeSelector ({ sizeSelector, setSizeSelector }) {
+export default function SizeSelector () {
+  const [sizeSelector, setSizeSelector] = useState('S')
+
   return (
     <Select
       isRequired
-      onChange={(e) => setSizeSelector(e.target.value)}
+      onChange={({ target }) => setSizeSelector(target.value)}
       borderRadius='lg'
       alignItems='flex-end'
-      width='auto' variant='filled'
+      width='auto'
+      variant='filled'
       size='sm'
       placeholder='Tallas'
       value={sizeSelector}

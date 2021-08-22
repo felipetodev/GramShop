@@ -23,7 +23,7 @@ export const addToCart = (product, cart) => {
 
   if (exist) {
     return cart.map(item => item.id === product.id
-      ? { ...exist, qty: item.qty + 1, size: item.size.concat(product.size) }
+      ? { ...exist, qty: item.qty + 1, size: item?.size?.concat(product.size) }
       : item
     )
   } else {
@@ -66,6 +66,7 @@ export const TOAST_SELECTOR = {
   addToCart: (product) => ({
     title: 'Producto agregado.',
     description: product ? `Has agregado ${product.title} a tu carro` : '',
+    position: 'top-right',
     status: 'success',
     duration: 1500,
     isClosable: true
