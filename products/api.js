@@ -2,7 +2,7 @@ const axios = require('axios')
 const Papa = require('papaparse')
 
 const api = async () => {
-  const { data } = await axios.get(process.env.DB_HOST, {
+  const { data = {} } = await axios.get(process.env.DB_HOST, {
     responseType: 'blob'
   })
 

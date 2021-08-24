@@ -7,7 +7,6 @@ const NO_STOCK = 'Sin stock'
 
 export default function Product ({ product, cart, setCart }) {
   const [sizeSelector, setSizeSelector] = useState('')
-  console.log(sizeSelector)
   const toast = useToast()
 
   const handleClick = (product) => {
