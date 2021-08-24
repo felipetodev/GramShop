@@ -16,7 +16,8 @@ const api = async () => {
     dataParsed.data.map(products => ({
       ...products,
       price: Number(products.price),
-      stock_quantity: Number(products.stock_quantity)
+      stock_quantity: Number(products.stock_quantity),
+      sizes: products.sizes ? products.sizes.toUpperCase().split(',') : ['Sin stock']
     }))
   )
 }

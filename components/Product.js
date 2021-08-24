@@ -1,8 +1,13 @@
+import { useState } from 'react'
 import { parseCurrency, addToCart, TOAST_SELECTOR } from 'helpers'
 import SizeSelector from 'components/SizeSelector'
 import { Text, Button, HStack, Image, Stack, useToast } from '@chakra-ui/react'
 
+const NO_STOCK = 'Sin stock'
+
 export default function Product ({ product, cart, setCart }) {
+  const [sizeSelector, setSizeSelector] = useState('')
+  console.log(sizeSelector)
   const toast = useToast()
 
   const handleClick = (product) => {
@@ -18,14 +23,20 @@ export default function Product ({ product, cart, setCart }) {
         <Text>{product.title}</Text>
         <HStack>
           <Text fontSize='sm' fontWeight='500' color='green.500'>${parseCurrency(product.price)}</Text>
-          <SizeSelector />
+          <SizeSelector
+            sizes={product.sizes}
+            activeSize={sizeSelector}
+            onHandleSelector={setSizeSelector}
+          />
         </HStack>
       </Stack>
       <Button
         size='sm'
         colorScheme='primary'
-        // TODO -> FIX STATE OF SIZE SELECTOR
-        onClick={() => handleClick({ ...product, qty: 1 /* size: Array(size) */ })}
+        disabled={sizeSelector === NO_STOCK}
+        onClick={() => sizeSelector
+          ? handleClick({ ...product, qty: 1, selectedSize: Array(sizeSelector) })
+          : toast(TOAST_SELECTOR.addProductWithoutSize())}
       >
         Agregar
       </Button>

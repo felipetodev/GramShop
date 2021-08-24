@@ -1,27 +1,25 @@
 import { Select } from '@chakra-ui/react'
-import { useState } from 'react'
 
-export default function SizeSelector () {
-  const [sizeSelector, setSizeSelector] = useState('S')
+const NO_STOCK = 'Sin stock'
 
+export default function SizeSelector ({ sizes, activeSize, onHandleSelector }) {
   return (
     <Select
       isRequired
-      onChange={({ target }) => setSizeSelector(target.value)}
+      onChange={({ target }) => onHandleSelector(target.value)}
       borderRadius='lg'
       alignItems='flex-end'
       width='auto'
       variant='filled'
       size='sm'
+      disabled={activeSize === NO_STOCK}
       placeholder='Tallas'
-      value={sizeSelector}
+      value={activeSize}
       cursor='pointer'
     >
-      <option value='S'>S</option>
-      <option value='M'>M</option>
-      <option value='L'>L</option>
-      <option value='XL'>XL</option>
-      <option value='XXL'>XXL</option>
+      {sizes.map(size => (
+        <option key={size} value={size}>{size}</option>
+      ))}
     </Select>
   )
 }
